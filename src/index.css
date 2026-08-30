@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  --cream: #f8f6f2;
+  --sand: #efede5;
+  --stone: #e2dfd4;
+  --stone-border: #d8d5c7;
+  --sage: #5D6D5F;
+  --sage-light: #6b7a6e;
+  --olive: #5A5A40;
+  --clay: #a67c52;
+  --ink: #2b2b29;
+  --white: #ffffff;
+}
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ink);
+    background-color: var(--cream);
+    letter-spacing: -0.011em;
+  }
+
+  h1, h2, h3, .font-serif, .font-serif-heading {
+    font-family: 'Lora', 'Georgia', serif;
+    letter-spacing: -0.02em;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* High contrast accessible focus rings meeting WCAG AA */
+  *:focus-visible {
+    outline: 2px solid var(--sage);
+    outline-offset: 2px;
+  }
+}
+
+/* Accessibility: Respect prefers-reduced-motion across animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbars with natural stone tones */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d8d5c7;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b5b1a0;
+}
+

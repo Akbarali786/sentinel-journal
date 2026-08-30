@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // User Data Isolation (Directive 3):
+    // All user documents and subcollections live strictly under /users/{userId}
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+      
+      match /interactions/{interactionId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      match /audit/{auditId} {
+        // Directive 11: Users can read their own audit trail, but writes are strictly server-side only
+        allow read: if isOwner(userId);
+        allow write: if false;
+      }
+      
+      match /reports/{reportId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      match /settings/{settingId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}

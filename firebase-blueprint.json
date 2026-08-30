@@ -1,0 +1,69 @@
+{
+  "entities": {
+    "JournalInteraction": {
+      "title": "JournalInteraction",
+      "description": "User journal session with reflection text, themes, questions, and prompt turns",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "uid": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "initialPrompt": { "type": "string", "maxLength": 20000 },
+        "tone": { "type": "string", "maxLength": 50 },
+        "turns": { "type": "array" },
+        "summary": { "type": "string", "maxLength": 2000 },
+        "keyThemes": { "type": "array" },
+        "deepeningQuestions": { "type": "array" },
+        "quarantined": { "type": "boolean" },
+        "wellbeingNotice": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "uid", "initialPrompt", "updatedAt"]
+    },
+    "AuditEvent": {
+      "title": "AuditEvent",
+      "description": "Security and interaction audit trail event",
+      "type": "object",
+      "properties": {
+        "eventType": { "type": "string", "maxLength": 100 },
+        "details": { "type": "string", "maxLength": 500 },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["eventType", "timestamp"]
+    },
+    "WeeklyReport": {
+      "title": "WeeklyReport",
+      "description": "Longitudinal pattern synthesis report with mood trajectory, themes, and open loops",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "uid": { "type": "string", "maxLength": 128 },
+        "weekKey": { "type": "string", "maxLength": 32 },
+        "summary": { "type": "string", "maxLength": 3000 },
+        "growthInsight": { "type": "string", "maxLength": 3000 },
+        "themes": { "type": "array" },
+        "moodTrajectory": { "type": "array" },
+        "openLoops": { "type": "array" },
+        "entryCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "uid", "weekKey", "summary", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/interactions/{interactionId}": {
+      "schema": { "$ref": "#/entities/JournalInteraction" },
+      "description": "Isolated per-user journal interactions"
+    },
+    "/users/{userId}/audit/{auditId}": {
+      "schema": { "$ref": "#/entities/AuditEvent" },
+      "description": "Security audit trail entries for user actions"
+    },
+    "/users/{userId}/reports/{reportId}": {
+      "schema": { "$ref": "#/entities/WeeklyReport" },
+      "description": "Cached longitudinal synthesis reports per user per week"
+    }
+  }
+}
